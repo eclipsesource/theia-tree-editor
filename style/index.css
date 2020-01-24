@@ -42,6 +42,33 @@ button[type="button"] {
 
 /* Theia-specific styling */
 
+.json-forms-tree-editor .control {
+  display: flex;
+  flex-direction: column;
+  margin: 2em;
+}
+
+.json-forms-tree-editor .control>label {
+  color: var(--theia-ui-font-color0);
+  font-size: var(--theia-ui-font-size2);
+  order: -1;
+  font-weight: bold;
+}
+
+.json-forms-tree-editor .control>.validation {
+  order: -1;
+}
+
+.json-forms-tree-editor .control>.input-description {
+  color: var(--theia-content-font-color0);
+}
+
+.json-forms-tree-editor .control>.validation_error {
+  color: var(--theia-error-color0);
+}
+
+/* TODO MuiXX styling still needed? */
+
 .json-forms-tree-editor .MuiPaper-root {
   background: var(--theia-layout-color0);
   font-family: var(--theia-ui-font-family);

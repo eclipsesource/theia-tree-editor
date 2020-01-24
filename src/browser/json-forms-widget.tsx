@@ -9,7 +9,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR MIT
  ********************************************************************************/
 import { Actions, jsonformsReducer, JsonFormsState } from '@jsonforms/core';
-import { materialCells, materialRenderers } from '@jsonforms/material-renderers';
+import { vanillaCells, vanillaRenderers, vanillaStyles, stylingReducer } from '@jsonforms/vanilla-renderers';
 import { JsonFormsDispatch, JsonFormsReduxContext } from '@jsonforms/react';
 import { Emitter, Event } from '@theia/core';
 import { BaseWidget, Message } from '@theia/core/lib/browser';
@@ -46,12 +46,19 @@ export class JSONFormsWidget extends BaseWidget {
   private initStore() {
     const initState: JsonFormsState = {
       jsonforms: {
-        cells: materialCells,
-        renderers: materialRenderers
+        cells: vanillaCells,
+        renderers: vanillaRenderers,
+        styles: vanillaStyles,
+        config: {
+          restrict: false,
+          trim: false,
+          showUnfocusedDescription: true,
+          hideRequiredAsterisk: false
+        }
       }
     };
     return createStore(
-      combineReducers({ jsonforms: jsonformsReducer() }),
+      combineReducers({ jsonforms: jsonformsReducer({ styles: stylingReducer }) }),
       initState
     );
   }
@@ -67,7 +74,8 @@ export class JSONFormsWidget extends BaseWidget {
         {
           refParserOptions: {
             dereference: { circular: 'ignore' }
-          }
+          },
+          useDefaults: true
         }
       )
     );
