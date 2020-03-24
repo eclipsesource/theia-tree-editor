@@ -45,19 +45,16 @@ function createJsonFormsTreeWidget(
  * @param parent The parent inversify container
  * @param treeEditorWidget The concrete tree editor widget to create
  * @param modelService The tree editor's model service
- * @param labelProvider The tree editor's label provider
  * @param nodeFactory The tree editor's node factory
  */
 export function createBasicTreeContainter(
     parent: interfaces.Container,
     treeEditorWidget: interfaces.Newable<JsonFormsTreeEditorWidget>,
     modelService: interfaces.Newable<TreeEditor.ModelService>,
-    labelProvider: interfaces.Newable<TreeEditor.LabelProvider>,
     nodeFactory: interfaces.Newable<TreeEditor.NodeFactory>): interfaces.Container {
 
     const container = parent.createChild();
     container.bind(TreeEditor.ModelService).to(modelService);
-    container.bind(TreeEditor.LabelProvider).to(labelProvider);
     container.bind(TreeEditor.NodeFactory).to(nodeFactory);
     container.bind(JSONFormsWidget).toSelf();
     container.bind(JsonFormsTreeWidget).toDynamicValue(context =>

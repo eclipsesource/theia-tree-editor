@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (c) 2019 EclipseSource and others.
+ * Copyright (c) 2020 EclipseSource and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -10,7 +10,7 @@
  ********************************************************************************/
 import { Emitter, MenuPath } from '@theia/core';
 import { ConfirmDialog, ExpandableTreeNode, TreeModel } from '@theia/core/lib/browser';
-import { ContextMenuRenderer } from '@theia/core/lib/browser/context-menu-renderer';
+import { ContextMenuRenderer, RenderContextMenuOptions } from '@theia/core/lib/browser/context-menu-renderer';
 import { TreeNode } from '@theia/core/lib/browser/tree/tree';
 import { NodeProps, TreeProps, TreeWidget } from '@theia/core/lib/browser/tree/tree-widget';
 import { inject, injectable, postConstruct } from 'inversify';
@@ -50,7 +50,6 @@ export class JsonFormsTreeWidget extends TreeWidget {
     @inject(TreeProps) readonly props: TreeProps,
     @inject(TreeModel) readonly model: TreeModel,
     @inject(ContextMenuRenderer) readonly contextMenuRenderer: ContextMenuRenderer,
-    @inject(TreeEditor.LabelProvider) readonly labelProvider: TreeEditor.LabelProvider,
     @inject(TreeEditor.NodeFactory) protected readonly nodeFactory: TreeEditor.NodeFactory
   ) {
     super(props, model, contextMenuRenderer);
@@ -162,7 +161,11 @@ export class JsonFormsTreeWidget extends TreeWidget {
         node: node,
         onClick: addHandler
       };
-      this.contextMenuRenderer.render(JsonFormsTreeContextMenu.ADD_MENU, treeAnchor);
+      const renderOptions: RenderContextMenuOptions = {
+        menuPath: JsonFormsTreeContextMenu.ADD_MENU,
+        anchor: treeAnchor,
+      };
+      this.contextMenuRenderer.render(renderOptions);
     };
   }
 
@@ -243,7 +246,7 @@ export class JsonFormsTreeWidget extends TreeWidget {
   protected renderIcon(node: TreeNode): React.ReactNode {
     return (
       <div className='tree-icon-container'>
-        <div className={this.labelProvider.getIconClass(node)} />
+        <div className={this.labelProvider.getIcon(node)} />
       </div>
     );
   }
@@ -254,9 +257,10 @@ export class JsonFormsTreeWidget extends TreeWidget {
    * If data of the subtree was changed too please call updateDataForSubtree instead.
    */
   public updateDataForNode(node: TreeEditor.Node, data: any) {
+    const oldName = this.labelProvider.getName(node);
     Object.assign(node.jsonforms.data, data);
-    const newName = this.labelProvider.getName(data);
-    if (node.name !== newName) {
+    const newName = this.labelProvider.getName(node);
+    if (oldName !== newName) {
       node.name = newName;
       this.model.refresh();
     }

@@ -1,6 +1,6 @@
 {
   "name": "theia-tree-editor",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "license": "(EPL-2.0 OR MIT)",
   "author": {
     "name": "EclipseSource"
@@ -18,17 +18,17 @@
     "style"
   ],
   "dependencies": {
-    "@jsonforms/core": "2.3.1",
-    "@jsonforms/react": "2.3.1",
-    "@jsonforms/vanilla-renderers":"2.3.1",
-    "@theia/core": "0.7.1",
-    "@theia/filesystem": "0.7.1",
-    "@theia/workspace": "0.7.1",
-    "react": "^16.4.0",
-    "react-dom": "^16.4.0",
-    "react-redux": "^6.0.0",
+    "@jsonforms/core": "2.4.0-alpha.1",
+    "@jsonforms/react": "2.4.0-alpha.1",
+    "@jsonforms/vanilla-renderers":"2.4.0-alpha.1",
+    "@theia/core": "0.16.1",
+    "@theia/filesystem": "0.16.1",
+    "@theia/workspace": "0.16.1",
+    "react": "^16.9.13",
+    "react-dom": "^16.9.13",
+    "react-redux": "^7.1.5",
     "recompose": "^0.27.1",
-    "redux": "^3.7.2",
+    "redux": "^4.0.4",
     "uuid": "^3.3.2"
   },
   "devDependencies": {

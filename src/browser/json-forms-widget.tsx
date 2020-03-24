@@ -9,7 +9,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR MIT
  ********************************************************************************/
 import { Actions, jsonformsReducer, JsonFormsState } from '@jsonforms/core';
-import { vanillaCells, vanillaRenderers, vanillaStyles, stylingReducer } from '@jsonforms/vanilla-renderers';
+import { vanillaCells, vanillaRenderers, vanillaStyles, stylingReducer, StyleDef, registerStyles } from '@jsonforms/vanilla-renderers';
 import { JsonFormsDispatch, JsonFormsReduxContext } from '@jsonforms/react';
 import { Emitter, Event } from '@theia/core';
 import { BaseWidget, Message } from '@theia/core/lib/browser';
@@ -48,7 +48,7 @@ export class JSONFormsWidget extends BaseWidget {
       jsonforms: {
         cells: vanillaCells,
         renderers: vanillaRenderers,
-        styles: vanillaStyles,
+        styles: this.createStyles(),
         config: {
           restrict: false,
           trim: false,
@@ -61,6 +61,29 @@ export class JSONFormsWidget extends BaseWidget {
       combineReducers({ jsonforms: jsonformsReducer({ styles: stylingReducer }) }),
       initState
     );
+  }
+
+  /** Augments the default vanilla styles with theia-specific styling and returns the result. */
+  private createStyles(): StyleDef[] {
+    const registerStylesAction = registerStyles([
+      {
+        name: 'array.button',
+        classNames: ['theia-button']
+      },
+      {
+        name: 'array.table.button',
+        classNames: ['theia-button']
+      },
+      {
+        name: 'control.input',
+        classNames: ['theia-input']
+      },
+      {
+        name: 'control.select',
+        classNames: ['theia-select']
+      }
+    ]);
+    return stylingReducer(vanillaStyles, registerStylesAction);
   }
 
   setSelection(selectedNode: TreeEditor.Node) {

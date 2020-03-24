@@ -16,7 +16,7 @@ import {
     MenuContribution,
     MenuModelRegistry,
 } from '@theia/core';
-import { WidgetOpenHandler } from '@theia/core/lib/browser';
+import { WidgetOpenHandler, LabelProviderContribution } from '@theia/core/lib/browser';
 
 import { TreeEditor } from './interfaces';
 import { JsonFormsTreeEditorWidget } from './tree-editor-widget';
@@ -26,7 +26,11 @@ import { generateAddCommands } from './util';
 export abstract class JsonFormsTreeEditorContribution extends WidgetOpenHandler<JsonFormsTreeEditorWidget> implements CommandContribution, MenuContribution {
     private commandMap: Map<string, Map<string, Command>>;
 
-    constructor(private modelService: TreeEditor.ModelService, private labelProvider: TreeEditor.LabelProvider) {
+    constructor(
+        private editorId: string,
+        private modelService: TreeEditor.ModelService,
+        private labelProvider: LabelProviderContribution
+    ) {
         super();
     }
     /**
@@ -45,11 +49,16 @@ export abstract class JsonFormsTreeEditorContribution extends WidgetOpenHandler<
     }
     registerMenus(menus: MenuModelRegistry): void {
         this.getCommandMap().forEach((value, _property, _map) => {
-            value.forEach((command, eClass) => {
+            value.forEach((command, type) => {
+                const iconInfo: TreeEditor.CommandIconInfo = {
+                    _id: 'theia-tree-editor-command-icon-info',
+                    editorId: this.editorId,
+                    type
+                };
                 menus.registerMenuAction(JsonFormsTreeContextMenu.ADD_MENU, {
                     commandId: command.id,
                     label: command.label,
-                    icon: this.labelProvider.getIconClass(eClass)
+                    icon: this.labelProvider.getIcon(iconInfo)
                 });
             });
         });

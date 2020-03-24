@@ -13,7 +13,7 @@ import {
     CompositeTreeNode,
     ExpandableTreeNode,
     SelectableTreeNode,
-    TreeDecoration,
+    DecoratedTreeNode,
     TreeNode,
 } from '@theia/core/lib/browser/tree';
 
@@ -30,7 +30,8 @@ export namespace TreeEditor {
         extends CompositeTreeNode,
         ExpandableTreeNode,
         SelectableTreeNode,
-        TreeDecoration.DecoratedTreeNode {
+        DecoratedTreeNode {
+        editorId: string;
         children: TreeNode[];
         name: string;
         jsonforms: {
@@ -47,34 +48,13 @@ export namespace TreeEditor {
     }
 
     export namespace Node {
-        export function is(node: TreeNode | undefined): node is Node {
-            if (!!node && 'jsonforms' in node) {
-                const { jsonforms } = node;
-                return !!jsonforms;
-            }
-            return false;
+        export function is(node: object | undefined): node is Node {
+            return TreeNode.is(node) && 'jsonforms' in node && !!node['jsonforms'];
         }
 
         export function hasType(node: TreeNode | undefined, type: string): node is Node {
             return is(node) && node.jsonforms.type === type;
         }
-    }
-
-    /**
-     * Label provider for the tree providing icons and display names for tree nodes.
-     */
-    export const LabelProvider = Symbol('LabelProvider');
-    export interface LabelProvider {
-        /**
-         * @param node The tree node or the node's type to get the icon css for
-         * @return the css class(es) specifying the tree node's icon
-         */
-        getIconClass(node: TreeNode | string): string;
-
-        /**
-         * @param data The display name for the given data
-         */
-        getName(data: any): string;
     }
 
     /**
@@ -162,5 +142,20 @@ export namespace TreeEditor {
          * @returns true if child nodes can be created
          */
         hasCreatableChildren(node: Node): boolean;
+    }
+
+    /**
+     * Information to get the icon of an add command from an editor's label provider contribution.
+     */
+    export interface CommandIconInfo {
+        _id: 'theia-tree-editor-command-icon-info';
+        editorId: string;
+        type: string;
+    }
+
+    export namespace CommandIconInfo {
+        export function is(info: object | undefined): info is CommandIconInfo {
+            return !!info && '_id' in info && 'theia-tree-editor-command-icon-info' === info['_id'];
+        }
     }
 }
