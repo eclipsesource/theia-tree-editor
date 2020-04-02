@@ -2,7 +2,7 @@
 Theia tree editor provides a framework to build tree master detail editors
 for editing model based data in Eclipse Theia.
 
-The current version supports Theia version 0.16.1.
+Supports Theia 1.0.0.
 
 Documentation about the editor's components and how to set up a custom editor
 can be found in the [documentation](./DOCUMENTATION.MD).
