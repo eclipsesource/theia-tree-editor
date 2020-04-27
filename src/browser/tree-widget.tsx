@@ -169,7 +169,7 @@ export class JsonFormsTreeWidget extends TreeWidget {
     };
   }
 
-  public async setData(data: any) {
+  public async setData(data: TreeEditor.TreeData) {
     this.data = data;
     await this.refreshModelChildren();
   }
