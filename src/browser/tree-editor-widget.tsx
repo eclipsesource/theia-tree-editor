@@ -107,6 +107,18 @@ export abstract class JsonFormsTreeEditorWidget extends BaseWidget
   }
 
   /**
+   * Sets the dirty state of this editor and notify listeners subscribed to the dirty state.
+   *
+   * @param dirty true if the editor is dirty
+   */
+  protected setDirty(dirty: boolean) {
+    if (this.dirty !== dirty) {
+      this.dirty = dirty;
+      this.onDirtyChangedEmitter.fire();
+    }
+  }
+
+  /**
    * Delete the given node including its associated data from the tree.
    *
    * @param node The tree node to delete

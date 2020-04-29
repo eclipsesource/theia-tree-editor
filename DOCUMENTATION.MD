@@ -16,8 +16,14 @@ Furthermore, you need to implement `handleFormUpdate`. This is called whenever t
 `save` needs to be overridden if the tree editor should react to the common save command (e.g. if the user presses Ctrl+S in Theia).
 By default nothing is done when save is called.
 
-If you want to implement an editor which uses a ressource which is loaded from a uri,
-you should consider extending [NavigatableTreeEditorWidget](src/browser/navigatable-tree-editor-widget.ts).
+If you want to implement an editor which uses a resource which is loaded from a uri,
+you should consider extending [ResourceTreeEditorWidget](src/browser/resource/resource-tree-editor-widget.ts).
+This already provides basic implementations for load, save and dirty marker handling, as well as
+adding and removing nodes. This is a good starting point for editors that "simply"
+show files from the theia workspace and don't need custom file retrieval.
+
+In case you have a resource given as a URI but need custom implementations for loading and saving
+the data, you should consider extending [NavigatableTreeEditorWidget](src/browser/navigatable-tree-editor-widget.ts).
 
 ## Theia Services
 To properly show labels and icons for the tree nodes in your editor,

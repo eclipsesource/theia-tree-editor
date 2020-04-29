@@ -20,8 +20,11 @@ import { v4 } from 'uuid';
 import { TreeEditor } from './interfaces';
 
 export interface AddCommandProperty {
+  /** The node to add a new child to. */
   node: TreeEditor.Node,
+  /** The property to add a new child to. */
   property: string,
+  /** The type identifier of the new child to create. */
   type: string
 }
 
@@ -254,7 +257,7 @@ export class JsonFormsTreeWidget extends TreeWidget {
   /**
    * Updates the data of the given node with the new data. Refreshes the tree if necessary.
    * Note that this method will only work properly if only data relevant for this node was changed.
-   * If data of the subtree was changed too please call updateDataForSubtree instead.
+   * If data of the subtree was changed, too, please call updateDataForSubtree instead.
    */
   public updateDataForNode(node: TreeEditor.Node, data: any) {
     const oldName = this.labelProvider.getName(node);

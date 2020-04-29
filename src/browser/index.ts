@@ -16,3 +16,4 @@ export * from './tree-widget';
 export * from './util';
 
 export * from './navigatable-tree-editor-widget';
+export * from './resource/resource-tree-editor-widget';

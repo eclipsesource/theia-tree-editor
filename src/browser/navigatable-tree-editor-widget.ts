@@ -9,7 +9,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR MIT
  ********************************************************************************/
 import { ILogger } from '@theia/core';
-import { Navigatable } from '@theia/core/lib/browser';
+import { Navigatable, Title, Widget } from '@theia/core/lib/browser';
 import URI from '@theia/core/lib/common/uri';
 import { WorkspaceService } from '@theia/workspace/lib/browser';
 
@@ -56,4 +56,9 @@ export abstract class NavigatableTreeEditorWidget extends JsonFormsTreeEditorWid
         return this.options.uri && this.options.uri.withPath(resourceUri.path);
     }
 
+    protected configureTitle(title: Title<Widget>): void {
+        title.label = this.options.uri.path.base;
+        title.caption = this.options.uri.toString();
+        title.closable = true;
+    }
 }
