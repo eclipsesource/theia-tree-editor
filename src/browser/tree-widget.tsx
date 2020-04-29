@@ -115,6 +115,9 @@ export class JsonFormsTreeWidget extends TreeWidget {
     }
 
     const addPlus = this.nodeFactory.hasCreatableChildren(node);
+    // Do not render remove button for root nodes. Root nodes have depth 0.
+    const addRemoveButton = props.depth > 0;
+
     return (
       <React.Fragment>
         {deco}
@@ -127,10 +130,14 @@ export class JsonFormsTreeWidget extends TreeWidget {
           ) : (
               ''
             )}
-          <div
-            className='node-button fa fa-minus-square'
-            onClickCapture={this.createRemoveHandler(node)}
-          />
+          {addRemoveButton ? (
+            <div
+              className='node-button fa fa-minus-square'
+              onClickCapture={this.createRemoveHandler(node)}
+            />
+          ) : (
+              ''
+          )}
         </div>
       </React.Fragment>
     );
