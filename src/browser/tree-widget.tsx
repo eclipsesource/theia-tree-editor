@@ -124,7 +124,7 @@ export class JsonFormsTreeWidget extends TreeWidget {
         <div className='node-buttons'>
           {addPlus ? (
             <div
-              className='node-button fa fa-plus-square'
+              className='node-button fa fa-plus'
               onClick={this.createAddHandler(node)}
             />
           ) : (
@@ -132,7 +132,7 @@ export class JsonFormsTreeWidget extends TreeWidget {
             )}
           {addRemoveButton ? (
             <div
-              className='node-button fa fa-minus-square'
+              className='node-button fa fa-trash'
               onClickCapture={this.createRemoveHandler(node)}
             />
           ) : (
