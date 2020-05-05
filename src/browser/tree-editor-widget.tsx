@@ -18,12 +18,11 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import { TreeEditor } from './interfaces';
-import { JSONFormsWidget } from './json-forms-widget';
-import { AddCommandProperty, JsonFormsTreeWidget } from './tree-widget';
+import { DetailFormWidget } from './detail-form-widget';
+import { AddCommandProperty, MasterTreeWidget } from './master-tree-widget';
 
 @injectable()
-export abstract class JsonFormsTreeEditorWidget extends BaseWidget
-  implements Saveable {
+export abstract class BaseTreeEditorWidget extends BaseWidget implements Saveable {
   public dirty: boolean = false;
   public autoSave: 'off';
   private splitPanel: SplitPanel;
@@ -38,8 +37,8 @@ export abstract class JsonFormsTreeEditorWidget extends BaseWidget
   protected instanceData: any;
 
   constructor(
-    protected readonly treeWidget: JsonFormsTreeWidget,
-    protected readonly formWidget: JSONFormsWidget,
+    protected readonly treeWidget: MasterTreeWidget,
+    protected readonly formWidget: DetailFormWidget,
     protected readonly workspaceService: WorkspaceService,
     protected readonly logger: ILogger,
     readonly widget_id: string
@@ -47,10 +46,10 @@ export abstract class JsonFormsTreeEditorWidget extends BaseWidget
     super();
     this.id = widget_id;
     this.splitPanel = new SplitPanel();
-    this.addClass('json-forms-tree-editor');
-    this.splitPanel.addClass('json-forms-tree-editor-sash');
-    this.treeWidget.addClass('json-forms-tree-editor-tree');
-    this.formWidget.addClass('json-forms-tree-editor-forms');
+    this.addClass(BaseTreeEditorWidget.Styles.EDITOR);
+    this.splitPanel.addClass(BaseTreeEditorWidget.Styles.SASH);
+    this.treeWidget.addClass(BaseTreeEditorWidget.Styles.TREE);
+    this.formWidget.addClass(BaseTreeEditorWidget.Styles.FORM);
     this.formWidget.onChange(
       debounce(data => {
         if (
@@ -177,10 +176,13 @@ export abstract class JsonFormsTreeEditorWidget extends BaseWidget
   protected abstract configureTitle(title: Title<Widget>): void;
 }
 
-export namespace JsonFormsTreeEditorWidget {
-  export const WIDGET_LABEL = 'JSONForms Tree Editor';
+export namespace BaseTreeEditorWidget {
+  export const WIDGET_LABEL = 'Theia Tree Editor';
 
   export namespace Styles {
-    export const JSONFORMS_TREE_EDITOR_CLASS = 'json-forms-tree-editor';
+    export const EDITOR = 'theia-tree-editor';
+    export const TREE = 'theia-tree-editor-tree';
+    export const FORM = 'theia-tree-editor-form';
+    export const SASH = 'theia-tree-editor-sash';
   }
 }

@@ -9,10 +9,10 @@
  * SPDX-License-Identifier: EPL-2.0 OR MIT
  ********************************************************************************/
 export * from './interfaces';
-export * from './json-forms-widget';
+export * from './detail-form-widget';
 export * from './tree-editor-contribution';
 export * from './tree-editor-widget';
-export * from './tree-widget';
+export * from './master-tree-widget';
 export * from './util';
 
 export * from './navigatable-tree-editor-widget';

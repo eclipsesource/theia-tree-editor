@@ -4,7 +4,7 @@ The detail is rendered with JSON Forms.
 # Configuring a tree editor
 To use the tree editor for a custom model, the following classes and interfaces need to be extended resp. implemented.
 
-## JsonFormsTreeEditorWidget
+## BaseTreeEditorWidget
 The implementation of this abstract class is the the whole editor widget containing a tree and a detail
 whose content depends on the node selected in the tree.
 

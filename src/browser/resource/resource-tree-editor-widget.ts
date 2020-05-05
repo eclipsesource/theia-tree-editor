@@ -12,21 +12,21 @@ import { DefaultResourceProvider, Resource } from '@theia/core/lib/common';
 import { ILogger } from '@theia/core/lib/common';
 import { WorkspaceService } from '@theia/workspace/lib/browser/workspace-service';
 import { postConstruct } from 'inversify';
-import { AddCommandProperty, JsonFormsTreeWidget } from '../tree-widget';
+import { AddCommandProperty, MasterTreeWidget } from '../master-tree-widget';
 import { TreeEditor } from '../interfaces';
 import {
   NavigatableTreeEditorWidget,
   NavigatableTreeEditorOptions,
 } from '../navigatable-tree-editor-widget';
-import { JSONFormsWidget } from '../json-forms-widget';
+import { DetailFormWidget } from '../detail-form-widget';
 
 export abstract class ResourceTreeEditorWidget extends NavigatableTreeEditorWidget {
   protected resource: Resource;
   protected data: any;
 
   constructor(
-    protected readonly treeWidget: JsonFormsTreeWidget,
-    protected readonly formWidget: JSONFormsWidget,
+    protected readonly treeWidget: MasterTreeWidget,
+    protected readonly formWidget: DetailFormWidget,
     protected readonly workspaceService: WorkspaceService,
     protected readonly logger: ILogger,
     readonly widget_id: string,

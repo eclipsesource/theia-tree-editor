@@ -19,11 +19,17 @@ import {
 import { WidgetOpenHandler, LabelProviderContribution } from '@theia/core/lib/browser';
 
 import { TreeEditor } from './interfaces';
-import { JsonFormsTreeEditorWidget } from './tree-editor-widget';
-import { JsonFormsTreeAnchor, JsonFormsTreeContextMenu } from './tree-widget';
+import { BaseTreeEditorWidget } from './tree-editor-widget';
+import { TreeAnchor, TreeContextMenu } from './master-tree-widget';
 import { generateAddCommands } from './util';
 
-export abstract class JsonFormsTreeEditorContribution extends WidgetOpenHandler<JsonFormsTreeEditorWidget> implements CommandContribution, MenuContribution {
+/**
+ * Abstract base class for defining custom tree editor contributions.
+ * An editor's contribution registers its commands and context menus.
+ * Furthermore, it defines which URIs the editor can handle and may configure
+ * the widget with additional options (see WidgetOpenHandler).
+ */
+export abstract class BaseTreeEditorContribution extends WidgetOpenHandler<BaseTreeEditorWidget> implements CommandContribution, MenuContribution {
     private commandMap: Map<string, Map<string, Command>>;
 
     constructor(
@@ -55,7 +61,7 @@ export abstract class JsonFormsTreeEditorContribution extends WidgetOpenHandler<
                     editorId: this.editorId,
                     type
                 };
-                menus.registerMenuAction(JsonFormsTreeContextMenu.ADD_MENU, {
+                menus.registerMenuAction(TreeContextMenu.ADD_MENU, {
                     commandId: command.id,
                     label: command.label,
                     icon: this.labelProvider.getIcon(iconInfo)
@@ -73,11 +79,11 @@ class AddCommandHandler implements CommandHandler {
         private modelService: TreeEditor.ModelService) {
     }
 
-    execute(treeAnchor: JsonFormsTreeAnchor) {
+    execute(treeAnchor: TreeAnchor) {
         treeAnchor.onClick(this.property, this.type);
     }
 
-    isVisible(treeAnchor: JsonFormsTreeAnchor): boolean {
+    isVisible(treeAnchor: TreeAnchor): boolean {
         if (!treeAnchor) {
             return false;
         }

@@ -13,22 +13,22 @@ import { Navigatable, Title, Widget } from '@theia/core/lib/browser';
 import URI from '@theia/core/lib/common/uri';
 import { WorkspaceService } from '@theia/workspace/lib/browser';
 
-import { JSONFormsWidget } from './json-forms-widget';
-import { JsonFormsTreeEditorWidget } from './tree-editor-widget';
-import { JsonFormsTreeWidget } from './tree-widget';
+import { DetailFormWidget } from './detail-form-widget';
+import { BaseTreeEditorWidget } from './tree-editor-widget';
+import { MasterTreeWidget } from './master-tree-widget';
 
 export const NavigatableTreeEditorOptions = Symbol(
-    'JsonFormsTreeEditorWidgetOptions'
+    'NavigatableTreeEditorOptions'
 );
 export interface NavigatableTreeEditorOptions {
     uri: URI;
 }
 
-export abstract class NavigatableTreeEditorWidget extends JsonFormsTreeEditorWidget implements Navigatable {
+export abstract class NavigatableTreeEditorWidget extends BaseTreeEditorWidget implements Navigatable {
 
     constructor(
-        protected readonly treeWidget: JsonFormsTreeWidget,
-        protected readonly formWidget: JSONFormsWidget,
+        protected readonly treeWidget: MasterTreeWidget,
+        protected readonly formWidget: DetailFormWidget,
         protected readonly workspaceService: WorkspaceService,
         protected readonly logger: ILogger,
         readonly widget_id: string,

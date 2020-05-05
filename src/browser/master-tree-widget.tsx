@@ -28,20 +28,20 @@ export interface AddCommandProperty {
   type: string
 }
 
-export interface JsonFormsTreeAnchor {
+export interface TreeAnchor {
   x: number,
   y: number,
   node: TreeEditor.Node,
   onClick: (property: string, type: string) => void
 }
 
-export namespace JsonFormsTreeContextMenu {
-  export const CONTEXT_MENU: MenuPath = ['json-forms-tree-context-menu'];
-  export const ADD_MENU: MenuPath = ['json-forms-tree-add-menu'];
+export namespace TreeContextMenu {
+  export const CONTEXT_MENU: MenuPath = ['theia-tree-editor-tree-context-menu'];
+  export const ADD_MENU: MenuPath = ['theia-tree-editor-tree-add-menu'];
 }
 
 @injectable()
-export class JsonFormsTreeWidget extends TreeWidget {
+export class MasterTreeWidget extends TreeWidget {
   protected onTreeWidgetSelectionEmitter = new Emitter<
     readonly Readonly<TreeEditor.Node>[]
   >();
@@ -56,14 +56,13 @@ export class JsonFormsTreeWidget extends TreeWidget {
     @inject(TreeEditor.NodeFactory) protected readonly nodeFactory: TreeEditor.NodeFactory
   ) {
     super(props, model, contextMenuRenderer);
-    this.id = JsonFormsTreeWidget.WIDGET_ID;
-    this.title.label = JsonFormsTreeWidget.WIDGET_LABEL;
-    this.title.caption = JsonFormsTreeWidget.WIDGET_LABEL;
-    this.addClass(JsonFormsTreeWidget.Styles.JSONFORMS_TREE_CLASS);
+    this.id = MasterTreeWidget.WIDGET_ID;
+    this.title.label = MasterTreeWidget.WIDGET_LABEL;
+    this.title.caption = MasterTreeWidget.WIDGET_LABEL;
 
     model.root = {
-      id: JsonFormsTreeWidget.WIDGET_ID,
-      name: JsonFormsTreeWidget.WIDGET_LABEL,
+      id: MasterTreeWidget.WIDGET_ID,
+      name: MasterTreeWidget.WIDGET_LABEL,
       parent: undefined,
       visible: false,
       children: []
@@ -73,8 +72,6 @@ export class JsonFormsTreeWidget extends TreeWidget {
   @postConstruct()
   protected init() {
     super.init();
-
-    this.addClass('tree-container');
 
     this.toDispose.push(this.onTreeWidgetSelectionEmitter);
     this.toDispose.push(this.onDeleteEmitter);
@@ -165,14 +162,14 @@ export class JsonFormsTreeWidget extends TreeWidget {
   private createAddHandler(node: TreeEditor.Node): (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void {
     return event => {
       const addHandler = (property: string, type: string) => this.onAddEmitter.fire({ node, property, type });
-      const treeAnchor: JsonFormsTreeAnchor = {
+      const treeAnchor: TreeAnchor = {
         x: event.nativeEvent.x,
         y: event.nativeEvent.y,
         node: node,
         onClick: addHandler
       };
       const renderOptions: RenderContextMenuOptions = {
-        menuPath: JsonFormsTreeContextMenu.ADD_MENU,
+        menuPath: TreeContextMenu.ADD_MENU,
         anchor: treeAnchor,
       };
       this.contextMenuRenderer.render(renderOptions);
@@ -326,14 +323,7 @@ export class JsonFormsTreeWidget extends TreeWidget {
   }
 }
 
-export namespace JsonFormsTreeWidget {
-  export const WIDGET_ID = 'json-forms-tree';
-  export const WIDGET_LABEL = 'JSONForms Tree';
-
-  /**
-   * CSS styles for the `JSONForms Hierarchy` widget.
-   */
-  export namespace Styles {
-    export const JSONFORMS_TREE_CLASS = 'json-forms-tree';
-  }
+export namespace MasterTreeWidget {
+  export const WIDGET_ID = 'theia-tree-editor-tree';
+  export const WIDGET_LABEL = 'Theia Tree Editor - Tree';
 }

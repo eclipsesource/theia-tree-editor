@@ -21,8 +21,11 @@ import { combineReducers, createStore } from 'redux';
 
 import { TreeEditor } from './interfaces';
 
+/**
+ * Renders the detail view of the tree editor and binds the selected object's data to a generated form.
+ */
 @injectable()
-export class JSONFormsWidget extends BaseWidget {
+export class DetailFormWidget extends BaseWidget {
   private selectedNode: TreeEditor.Node;
   private store: any;
 

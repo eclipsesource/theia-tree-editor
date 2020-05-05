@@ -9,30 +9,30 @@
  * SPDX-License-Identifier: EPL-2.0 OR MIT
  ********************************************************************************/
 import { Command } from '@theia/core';
-import { createTreeContainer, defaultTreeProps, TreeProps, TreeWidget } from '@theia/core/lib/browser/tree';
+import { createTreeContainer, defaultTreeProps, TreeProps, TreeWidget as TheiaTreeWidget} from '@theia/core/lib/browser/tree';
 import { interfaces } from 'inversify';
 
 import { TreeEditor } from './interfaces';
-import { JSONFormsWidget } from './json-forms-widget';
-import { JsonFormsTreeEditorWidget } from './tree-editor-widget';
-import { JsonFormsTreeContextMenu, JsonFormsTreeWidget } from './tree-widget';
+import { DetailFormWidget } from './detail-form-widget';
+import { BaseTreeEditorWidget } from './tree-editor-widget';
+import { TreeContextMenu, MasterTreeWidget } from './master-tree-widget';
 
-export const JSON_FORMS_TREE_PROPS = <TreeProps>{
+export const TREE_PROPS = <TreeProps>{
     ...defaultTreeProps,
-    contextMenuPath: JsonFormsTreeContextMenu.CONTEXT_MENU,
+    contextMenuPath: TreeContextMenu.CONTEXT_MENU,
     multiSelect: false,
     search: false
 };
 
-function createJsonFormsTreeWidget(
+function createTreeWidget(
     parent: interfaces.Container
-): JsonFormsTreeWidget {
+): MasterTreeWidget {
     const treeContainer = createTreeContainer(parent);
 
-    treeContainer.unbind(TreeWidget);
-    treeContainer.bind(JsonFormsTreeWidget).toSelf();
-    treeContainer.rebind(TreeProps).toConstantValue(JSON_FORMS_TREE_PROPS);
-    return treeContainer.get(JsonFormsTreeWidget);
+    treeContainer.unbind(TheiaTreeWidget);
+    treeContainer.bind(MasterTreeWidget).toSelf();
+    treeContainer.rebind(TreeProps).toConstantValue(TREE_PROPS);
+    return treeContainer.get(MasterTreeWidget);
 }
 
 /**
@@ -49,16 +49,15 @@ function createJsonFormsTreeWidget(
  */
 export function createBasicTreeContainter(
     parent: interfaces.Container,
-    treeEditorWidget: interfaces.Newable<JsonFormsTreeEditorWidget>,
+    treeEditorWidget: interfaces.Newable<BaseTreeEditorWidget>,
     modelService: interfaces.Newable<TreeEditor.ModelService>,
     nodeFactory: interfaces.Newable<TreeEditor.NodeFactory>): interfaces.Container {
 
     const container = parent.createChild();
     container.bind(TreeEditor.ModelService).to(modelService);
     container.bind(TreeEditor.NodeFactory).to(nodeFactory);
-    container.bind(JSONFormsWidget).toSelf();
-    container.bind(JsonFormsTreeWidget).toDynamicValue(context =>
-        createJsonFormsTreeWidget(context.container));
+    container.bind(DetailFormWidget).toSelf();
+    container.bind(MasterTreeWidget).toDynamicValue(context => createTreeWidget(context.container));
     container.bind(treeEditorWidget).toSelf();
 
     return container;
