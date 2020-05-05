@@ -64,6 +64,19 @@ export function createBasicTreeContainter(
     return container;
 }
 
+/**
+ * Creates a new map based on the model service's children mapping.
+ * The created map maps from property name to a new Map.
+ * The inner map maps from type identifier to the command used to create a new instance of the type.
+ *
+ * Basically, this creates add commands for all types that can be created in properties, grouped by property name.
+ *
+ * Important: Just because an object has a property of a name in the returned mapping,
+ * this does not mean the type can be created. To see if a command can be used to create an object's child,
+ * the returned mapping needs to be cross-referenced with the model service's children mapping again.
+ *
+ * @param modelService The tree editor's model service
+ */
 export function generateAddCommands(modelService: TreeEditor.ModelService): Map<string, Map<string, Command>> {
     const creatableTypes: Set<TreeEditor.ChildrenDescriptor> = Array.from(modelService.getChildrenMapping(), ([_key, value]) => value)
         // get flat array of child descriptors
@@ -71,17 +84,17 @@ export function generateAddCommands(modelService: TreeEditor.ModelService): Map<
         // unify by adding to set
         .reduce((acc, val) => acc.add(val), new Set<TreeEditor.ChildrenDescriptor>());
 
-    // Create a command for every eclass which can be added to at least one model object
+    // Create a command for every type which can be added to at least one model object
     const commandMap: Map<string, Map<string, Command>> = new Map();
     Array.from(creatableTypes).forEach(desc => {
         const classCommandMap: Map<string, Command> = new Map();
-        desc.children.forEach(eclass => {
-            const name = modelService.getNameForType(eclass);
+        desc.children.forEach(type => {
+            const name = modelService.getNameForType(type);
             const command = {
                 id: 'json-forms-tree.add.' + name,
                 label: name
             };
-            classCommandMap.set(eclass, command);
+            classCommandMap.set(type, command);
         });
         commandMap.set(desc.property, classCommandMap);
     });

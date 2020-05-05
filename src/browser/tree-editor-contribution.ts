@@ -34,7 +34,7 @@ export abstract class JsonFormsTreeEditorContribution extends WidgetOpenHandler<
         super();
     }
     /**
-     * @returns maps property name to EClass identifiers to their corresponding add command
+     * @returns maps property names to type identifiers to their corresponding add command
      */
     private getCommandMap(): Map<string, Map<string, Command>> {
         if (!this.commandMap) {
@@ -44,7 +44,7 @@ export abstract class JsonFormsTreeEditorContribution extends WidgetOpenHandler<
     }
     registerCommands(commands: CommandRegistry): void {
         this.getCommandMap().forEach((value, property, _map) => {
-            value.forEach((command, eClass) => commands.registerCommand(command, new AddCommandHandler(property, eClass, this.modelService)));
+            value.forEach((command, type) => commands.registerCommand(command, new AddCommandHandler(property, type, this.modelService)));
         });
     }
     registerMenus(menus: MenuModelRegistry): void {
@@ -81,6 +81,8 @@ class AddCommandHandler implements CommandHandler {
         if (!treeAnchor) {
             return false;
         }
+
+        // Check whether the node object's type can contain children of this command's type.
         return this.modelService.getChildrenMapping().get(treeAnchor.node.jsonforms.type)
             .map(desc => desc.children)
             .reduce((acc, val) => acc.concat(val), [])

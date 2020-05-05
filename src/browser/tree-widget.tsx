@@ -32,7 +32,7 @@ export interface JsonFormsTreeAnchor {
   x: number,
   y: number,
   node: TreeEditor.Node,
-  onClick: (property: string, eClass: string) => void
+  onClick: (property: string, type: string) => void
 }
 
 export namespace JsonFormsTreeContextMenu {
@@ -164,7 +164,7 @@ export class JsonFormsTreeWidget extends TreeWidget {
 
   private createAddHandler(node: TreeEditor.Node): (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void {
     return event => {
-      const addHandler = (property: string, eClass: string) => this.onAddEmitter.fire({ node, property, type: eClass });
+      const addHandler = (property: string, type: string) => this.onAddEmitter.fire({ node, property, type });
       const treeAnchor: JsonFormsTreeAnchor = {
         x: event.nativeEvent.x,
         y: event.nativeEvent.y,
