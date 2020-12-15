@@ -1,4 +1,9 @@
-# Theia Tree Editor
+# MOVED - Theia Tree Editor 
+
+**THE THEIA TREE EDITOR HAS BEEN MOVED TO THE [EMF.CLOUD](https://www.eclipse.org/emfcloud/) PROJECT OF THE ECLIPSE FOUNDATION. THE NEW REPOSITORY CAN BE FOUND HERE: https://github.com/eclipse-emfcloud/theia-tree-editor/**
+
+---
+
 [![License: EPL v2.0](https://img.shields.io/badge/License-EPL%20v2.0-yellow.svg)](https://www.eclipse.org/legal/epl-2.0/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
